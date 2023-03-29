@@ -1,0 +1,4 @@
+grpcio<1.40.0; python_version < '3.0'
+flask
+llama-index
+langchain

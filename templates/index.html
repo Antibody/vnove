@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatBot</title>
+    <style>
+        #response-container {
+            border: 1px solid grey;
+            padding: 1rem;
+            width: 50%;
+            min-height: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>ChatBot</h1>
+    <form id="ask-form">
+        <label for="query">What do you want to ask?</label>
+        <input type="text" id="query" name="query">
+        <button type="submit">Ask</button>
+    </form>
+    <div id="response-container">
+        <p id="response"></p>
+        <p id="loading" style="display: none;">Please wait...</p>
+    </div>
+
+    <script>
+        document.getElementById('ask-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const query = document.getElementById('query').value;
+            const loading = document.getElementById('loading');
+            const responseElement = document.getElementById('response');
+
+            loading.style.display = 'block';
+            responseElement.textContent = '';
+
+            fetch('/ask', {
+                method: 'POST',
+                body: new FormData(event.target),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                loading.style.display = 'none';
+                responseElement.textContent = data.response;
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+        });
+    </script>
+</body>
+</html>
