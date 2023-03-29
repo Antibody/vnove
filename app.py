@@ -55,7 +55,7 @@ def ask():
 
 
 if __name__ == '__main__':
-    os.environ["OPENAI_API_KEY"] = "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"
+    os.environ["OPENAI_API_KEY"] = input("Your OPEN_AI_API keys")
     construct_index("vnove")  # Comment out the threading line and call the function directly
     app.run(debug=True, threaded=True, host='0.0.0.0',
             port=int(os.environ.get('PORT', 8080)))
